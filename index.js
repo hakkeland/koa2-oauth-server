@@ -39,7 +39,11 @@ class KoaOAuthServer {
         return async (ctx, next) => {
             debug('Running authenticate endpoint middleware');
             const request  = new Request(ctx.request),
-                  response = new Response(ctx.response);
+                  response = new Response({
+                    headers: {
+                      'Access-Control-Allow-Origin': '*'
+                    }
+                  });
 
             await this.server
                 .authenticate(request, response)
@@ -58,7 +62,11 @@ class KoaOAuthServer {
         return async (ctx, next) => {
             debug('Running authorize endpoint middleware');
             const request  = new Request(ctx.request),
-                  response = new Response(ctx.response);
+                  response = new Response({
+                    headers: {
+                      'Access-Control-Allow-Origin': '*'
+                    }
+                  });
 
             await this.server
                 .authorize(request, response, options)
@@ -78,7 +86,11 @@ class KoaOAuthServer {
         return async (ctx, next) => {
             debug('Running token endpoint middleware');
             const request  = new Request(ctx.request),
-                  response = new Response(ctx.response);
+                  response = new Response({
+                    headers: {
+                      'Access-Control-Allow-Origin': '*'
+                    }
+                  });
 
             await this.server
                 .token(request, response)
@@ -125,7 +137,11 @@ function handleResponse(ctx, response) {
 function handleError(err, ctx) {
     debug(`Preparing error response (${err.code || 500})`);
 
-    const response = new Response(ctx.response);
+    const response = new Response({
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      }
+    });
     ctx.set(response.headers);
 
     ctx.status = err.code || 500;
